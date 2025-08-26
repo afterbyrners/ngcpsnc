@@ -1,4 +1,4 @@
-Northrop Grumman Collaboration Project 2025 
+Northrop Grumman Collaboration Project 2025-2026 
 Stability & Controls Team
 
 Team Leader: Byrn Balangauan
