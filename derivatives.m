@@ -1,7 +1,5 @@
 clear, clc % 
 
-
-
 x_bar_cg = 0.3; %
 M = 484/968; % Mach
 AoA_0L = -3 * (pi/180); % Radians
