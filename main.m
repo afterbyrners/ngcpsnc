@@ -1,21 +1,34 @@
-%% Constants
+%% NGCP STABILITY AND CONTROLS 2025-2026
+%  Authored by:
+%  Alexander Burghardt (S&C Deputy)
+%  Byrn Balangauan (S&C Lead)
+%  Natalia Guillen-Moreno
+%  Derek Hou
+%  Hope White
+%  Wesley Bulthuis
+
 clear, clc
+
+%% ENVIRONMENTAL CONSTANTS
 v = 456; % ft/sec
 h = 30000; % ft
+g = 32.2;
+b = 33.8;
+
+%% VEHICULAR CONSTANTS
 M = 0.459; % mach
-W = 6360; % lbs
-q_bar = 92.7; % dynamic pressure
-c_bar = 5.47; % c_bar
-AoA = deg2rad(2); % angle of attack
 IxxB = 7985; % slug*ft^2
 IyyB = 3326; % slug*ft^2
 IzzA = 11183; % slug*ft^2
 IxzB = 0; % slug*ft^2
-g = 32.2;
+AoA = deg2rad(2); % angle of attack
+W = 6360; % lbs
 S = 182; 
 m = W/g;
-b = 33.8;
+q_bar = 92.7; % dynamic pressure
+c_bar = 5.47; % c_bar
 U1 = v;
+
 %% Given Derivatives & Calculated Derivatives
 Ctxu=-0.07;
 Ctx1=0.0300;
@@ -76,6 +89,7 @@ NP = q_bar*S*b^2/(2*IzzA*U1)*Cnp;
 Nr = q_bar*S*b^2/(2*IzzA*U1)*Cnr;
 Ndeltaa = q_bar*S*b/IzzA*Cndeltaa;
 Ndeltar = q_bar*S*b/IzzA*Cndeltar;
+
 %% Longitudinal
 A = [(Xu+XTu) Xalpha 0 -g;
 Zu/U1 Zw Zq/U1+1 0;
@@ -111,6 +125,7 @@ figure, rlocus(DA_DE_tf), title("AoA to Elevator Transfer Function");
 figure, rlocus(DTHE_DE_tf), title("Pitch Angle to Elevator Transfer Function");
 figure, bode(DA_DE_tf), margin(DA_DE_tf), title("AoA to Elevator Transfer Function")
 figure, bode(DTHE_DE_tf), margin(DTHE_DE_tf), title("Pitch Angle to Elevator Transfer Function");
+
 %% Lateral
 A = [YB/U1, YP/U1, -1, g/U1;
 LB, LP, Lr, 0;
