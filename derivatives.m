@@ -11,31 +11,31 @@ eta_h = 0.95;
 
 % WING %
 
-b_w = 113; % Wingspan
-cr_w = 23; % Wing Root Chord
-ct_w = 4; % Wing Tip Chord
-LE_sweep_w = atan(28/50); % Sweep Angle Wing in Rad
+b_w = 12; % Wingspan
+cr_w = 1.96078; % Wing Root Chord
+ct_w = 1.37255; % Wing Tip Chord
+LE_sweep_w = atan(0/50); % Sweep Angle Wing in Rad
     [lambda_w, S_w, AR_w, c_bar_w, x_mgc_w, y_mgc_w] = geoParameter(b_w,cr_w,ct_w,LE_sweep_w)
     x_ac_w = c_bar_w/4;
 aileronRatio = 0.2; % (cf/c)
     tau_a = AppendixD(aileronRatio);
-y1 = 35; % inner point of aileron
-y2 = 51; % outer point of aileron
-canthalTilt = atan(9/50); % divergence - (rad)
+y1 = 14.71; % inner point of aileron
+y2 = 90.69; % outer point of aileron
+canthalTilt = atan(0/50); % divergence - (rad) 
 
 % HORIZONTAL TAIL % 
 
-b_h = 46; % HorTailspan
-cr_h = 12; % HorTail Root Chord
-ct_h = 4; % HorTail Tip Chord
-LE_sweep_h = atan(13/23); % Sweep Angle HorTail in Rad
+b_h = 1.485; % HorTailspan
+cr_h = 1.202; % HorTail Root Chord
+ct_h = .781; % HorTail Tip Chord
+LE_sweep_h = atan(0/23); % Sweep Angle HorTail in Rad
     [lambda_h, S_h, AR_h, c_bar_h, x_mgc_h, y_mgc_h] = geoParameter(b_h,cr_h,ct_h,LE_sweep_h)
 elevatorRatio = 0.3;
     tau_e = AppendixD(elevatorRatio)
 
-x_whr = 55; % dist from LE of wing root to LE of horTail chord
+x_whr = 2.705; % dist from LE of wing root to LE of horTail chord
     x_wh = x_whr - cr_w/4 + cr_h/4;
-z_wh = 6; % vert distance from wing to tail, positive if tail above
+z_wh = .41; % vert distance from wing to tail, positive if tail above
     r = x_wh/(b_w/2);
     m = z_wh/(b_w/2);
     x_ac_h = x_whr + x_mgc_h + c_bar_h/4 - x_mgc_w;
@@ -44,14 +44,14 @@ z_wh = 6; % vert distance from wing to tail, positive if tail above
 % VERTICAL TAIL %
 
 b_v = 31; % dist from A/C centerline to tail tip
-cr_v = 26; % root chord vertical tail
-ct_v = 6; % tip chord vertical tail
+cr_v = 1.338; % root chord vertical tail
+ct_v = .669; % tip chord vertical tail
 eta_v = 0.95; % assumed - if not given just keep it as this
 LE_sweep_v = atan(27/31); % rad
     [lambda_v, S_v, AR_v, c_bar_v, x_mgc_v, y_mgc_v] = geoParameter(b_v,cr_v,ct_v,LE_sweep_v)
     x_mgc_v=x_mgc_v*2; y_mgc_v=y_mgc_v*2;
     AR_eff = 2*AR_v;
-x_wvr = 39; % distance from wing leading edge to v leading edge
+x_wvr = 2.705; % distance from wing leading edge to v leading edge
     x_ac_v = x_wvr + x_mgc_v + (c_bar_v/4)-x_mgc_w;
 z_w = 0; % Distance from centerline to wing % FROM THE HANDOUT LETS GO
 d_max = 12; % Max diameter
@@ -143,3 +143,4 @@ end
 function Cl_d_a = AppendixG(cl,t,cr,s,b,l,y1,y2)
     Cl_d_a = (2*cl*t*cr/s/b)*((y2^2 /2 + ((l-1)/(b/2))*y2^3 /3)-(y1^2 /2 + ((l-1)/(b/2))*y1^3 /3));
 end
+
