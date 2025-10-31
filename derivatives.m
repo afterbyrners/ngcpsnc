@@ -30,7 +30,7 @@ cr_h = 1.202; % HorTail Root Chord
 ct_h = .781; % HorTail Tip Chord
 LE_sweep_h = atan(0/23); % Sweep Angle HorTail in Rad
     [lambda_h, S_h, AR_h, c_bar_h, x_mgc_h, y_mgc_h] = geoParameter(b_h,cr_h,ct_h,LE_sweep_h)
-elevatorRatio = 0.3;
+elevatorRatio = 0.25;
     tau_e = AppendixD(elevatorRatio)
 
 x_whr = 2.705; % dist from LE of wing root to LE of horTail chord
@@ -55,7 +55,7 @@ x_wvr = 2.705; % distance from wing leading edge to v leading edge
     x_ac_v = x_wvr + x_mgc_v + (c_bar_v/4)-x_mgc_w;
 z_w = 0; % Distance from centerline to wing % FROM THE HANDOUT LETS GO
 d_max = 12; % Max diameter
-rudderRatio = 0.3; 
+rudderRatio = .2652; 
     tau_r = AppendixD(rudderRatio)
 
 
@@ -143,4 +143,5 @@ end
 function Cl_d_a = AppendixG(cl,t,cr,s,b,l,y1,y2)
     Cl_d_a = (2*cl*t*cr/s/b)*((y2^2 /2 + ((l-1)/(b/2))*y2^3 /3)-(y1^2 /2 + ((l-1)/(b/2))*y1^3 /3));
 end
+
 
