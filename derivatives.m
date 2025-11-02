@@ -19,7 +19,7 @@ aileronRatio = 0.2; % (cf/c)
     tau_a = AppendixD(aileronRatio);
 y1 = 35; % inner point of aileron
 y2 = 51; % outer point of aileron
-canthalTilt = atan(9/50); % divergence - (rad)
+dihedralAngle = atan(9/50); % divergence - (rad)
 
 % HORIZONTAL TAIL % 
 
@@ -80,7 +80,7 @@ CL_a_v = polhamus(AR_eff, lambda_v, LE_sweep_v, M)
 AppE = AppendixE(S_v, S_w, z_w, d_max, AR_w, LE_sweep_w, lambda_w)
 Cy_0 = 0;
 Cy_B_v = -S_v/S_w*CL_a_v*AppE;
-Cy_B_w = -0.0001*abs(canthalTilt)*180/pi;
+Cy_B_w = -0.0001*abs(dihedralAngle)*180/pi;
 Cy_B_wv = Cy_B_w+Cy_B_v;
 Cy_B_f = 0.3*Cy_B_wv;
 Cy_B = Cy_B_f+Cy_B_wv
@@ -88,7 +88,7 @@ Cy_d_a = 0
 Cy_d_r = eta_v*S_v/S_w*CL_a_v*tau_r
 
 Cl_0 = 0;
-Cl_B_w = -2*CL_a_w*canthalTilt*y_mgc_w/b_w;
+Cl_B_w = -2*CL_a_w*dihedralAngle*y_mgc_w/b_w;
 Cl_B_v = Cy_B_v* y_mgc_v/b_w;
 Cl_B = Cl_B_v + Cl_B_w
 Cl_d_a = AppendixG(CL_a_w,tau_a,cr_w,S_w,b_w,lambda_w,y1,y2)

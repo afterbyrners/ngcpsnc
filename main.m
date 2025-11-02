@@ -30,60 +30,81 @@ c_bar = 5.47; % c_bar
 U1 = v;
 
 %% Given Derivatives & Calculated Derivatives
+
 Ctxu=-0.07;
 Ctx1=0.0300;
+
 Cdu=0;
 Cd1=0.0300;
+
 Cdalpha=0.250;
 Cddeltae=0;
+
 Clu=0;
 Clalpha=5.15;
 Cl1=0.378;
 Cldeltae=0.5;
 Clq=4.1;
+
 Cmu=0;
 Cm1=0;
 Cmalpha=-0.700;
 Cmq=-14.9;
 Cmdeltae=-1.12;
+
+% Forward Motion
 Xu=-q_bar*S/(m*U1)*(Cdu+2*Cd1);
 XTu=q_bar*S/(m*U1)*(Ctxu+2*Ctx1);
 Xalpha=q_bar*S/(m)*(-Cdalpha+Cl1);
 Xdeltae=-q_bar*S/m*Cddeltae;
+
+% Upwards Motion
 Zalpha=-q_bar*S/m*(Clalpha+Cd1);
 Zw = Zalpha/U1;
 Zu=-q_bar*S/(m*U1)*(Clu+2*Cl1);
 Zq=-q_bar*S*c_bar*Clq/(2*m*U1);
 Zdeltae=-q_bar*S/m*Cldeltae;
+
+% Pitching Moment
 Mu=q_bar*S*c_bar*(Cmu+2*Cm1)/(IyyB*U1);
 Malpha=q_bar*S*c_bar*Cmalpha/IyyB;
 Mq=q_bar*S*c_bar^2*Cmq/(2*IyyB*U1);
 Mdeltae=q_bar*S*c_bar*Cmdeltae/IyyB;
+
+% Yawing Motion
 CyB = -.346;
 Cyp = -.0827;
 Cyr = 0.3;
 Cydeltaa = 0;
 Cydeltar = 0.2;
+
+% Rolling Moment
 ClB = -0.0944;
 Clp = -0.442;
 Clr = .0926;
 Cldeltaa = 0.181;
 Cldeltar = 0.015;
+
 CnB = .1106;
 Cnp = -.0243;
 Cnr = -.139;
 Cndeltaa = -.0254;
 Cndeltar = -.0365;
+
+% Side Force
 YB = q_bar*S/m*CyB;
 YP = q_bar*S/(2*m*U1)*Cyp;
 Yr = q_bar*S/(2*m*U1)*Cyr;
 Ydeltaa = 0;
 Ydeltar = q_bar*S/m*Cydeltar;
+
+% 
 LB = q_bar*S*b/IxxB*ClB;
 LP = q_bar*S*b^2/(2*IxxB*U1)*Clp;
 Lr = q_bar*S*b^2/(2*IxxB*U1)*Clr;
 Ldeltaa = q_bar*S*b/IxxB*Cldeltaa;
 Ldeltar = q_bar*S*b/IxxB*Cldeltar;
+
 NB = q_bar*S*b/IzzA*CnB;
 NP = q_bar*S*b^2/(2*IzzA*U1)*Cnp;
 Nr = q_bar*S*b^2/(2*IzzA*U1)*Cnr;
