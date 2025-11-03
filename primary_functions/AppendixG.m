@@ -1,16 +1,3 @@
-function [outputArg1,outputArg2] = AppendixG(inputArg1,inputArg2)
-%APPENDIXG Summary of this function goes here
-%   Detailed explanation goes here
-arguments (Input)
-    inputArg1
-    inputArg2
-end
-
-arguments (Output)
-    outputArg1
-    outputArg2
-end
-
-outputArg1 = inputArg1;
-outputArg2 = inputArg2;
+function Cl_d_a = AppendixG(cl,t,cr,s,b,l,y1,y2)
+    Cl_d_a = (2*cl*t*cr/s/b)*((y2^2 /2 + ((l-1)/(b/2))*y2^3 /3)-(y1^2 /2 + ((l-1)/(b/2))*y1^3 /3));
 end

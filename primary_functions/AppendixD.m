@@ -1,16 +1,3 @@
-function [outputArg1,outputArg2] = AppendixD(inputArg1,inputArg2)
-%APPENDIXD Summary of this function goes here
-%   Detailed explanation goes here
-arguments (Input)
-    inputArg1
-    inputArg2
-end
-
-arguments (Output)
-    outputArg1
-    outputArg2
-end
-
-outputArg1 = inputArg1;
-outputArg2 = inputArg2;
+function tau = AppendixD(flapRatio) % Effectivness calculation
+    tau = 1.340933 + (0.00003390316 - 1.340933)/(1 + (flapRatio/0.4437918)^1.331642); % from online curve fit, accurate except at really low ratios like <0.05
 end

@@ -100,44 +100,6 @@ Cn_d_a = 0
 Cn_d_r = -Cy_d_r*(x_ac_v-x_cg)/b_w
 
 
-function [lambda, S, AR, c_bar, x_mgc, y_mgc] = geoParameter(b,cr,ct,sweep) % various parameters that need to be found over and over
-    lambda = ct/cr; % Taper Ratio
-    S = 0.5*b*cr*(1+lambda); % Surface area
-    AR = b^2/S; % Aspect Ratio
-    c_bar = 2/3 * cr * (1+lambda+lambda^2)/(1+lambda); % self explanetory
-    y_mgc = b/6 * (1+2*lambda)/(1+lambda); % same with this 
-    x_mgc = y_mgc*tan(sweep); % and this as well
-end
-
-function tau = AppendixD(flapRatio) % Effectivness calculation
-    tau = 1.340933 + (0.00003390316 - 1.340933)/(1 + (flapRatio/0.4437918)^1.331642); % from online curve fit, accurate except at really low ratios like <0.05
-end
-
-function CL_a = polhamus(AR,lambda,sweep,M) % CL_alpha function 
-   if AR < 4
-       k = 1 + (AR*(1.87-0.000233*sweep))/100;
-   elseif AR >= 4
-       k = 1+((8.2 -2.3*sweep)-AR*(0.22-0.153*sweep))/100;
-   end
-   tangent_half = tan(sweep)-(4*0.5*(1-lambda))/(AR*(1+lambda));
-   CL_a = 2*pi*AR/(2+sqrt(((AR^2)*(1-M^2))/(k^2)*(1 + ((tangent_half)^2)/(1-M^2))+4));
-end
 
 
-function de_dalpha = downwash(AR,lambda,LE_sweep,M,r,m)
-    KA = (1/AR)-(1/(1+AR^1.7));
-    K_lambda = (10-3*(lambda))/7;
-    Kmr = (1-(m*0.5))/(r^.33);
-    Sweep_25 = atan(tan(LE_sweep)-(4*0.25*(1-lambda))/(AR*(1+lambda)));
-    de_o_alpha_0 = 4.44*(KA*K_lambda*Kmr*sqrt(cos(Sweep_25)))^1.19;
-    de_dalpha = de_o_alpha_0/sqrt(1-M^2);
-end
 
-function AppE = AppendixE(S_v, S, z, d, AR, sweep, lambda)
-    q = atan(tan(sweep)-(4*0.25*(1-lambda))/(AR*(1+lambda)));
-    AppE = 0.724 + 3.06*(S_v/S)/(1+cos(q))+0.4*z/d + 0.009*AR;
-end
-
-function Cl_d_a = AppendixG(cl,t,cr,s,b,l,y1,y2)
-    Cl_d_a = (2*cl*t*cr/s/b)*((y2^2 /2 + ((l-1)/(b/2))*y2^3 /3)-(y1^2 /2 + ((l-1)/(b/2))*y1^3 /3));
-end

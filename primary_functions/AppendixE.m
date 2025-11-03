@@ -1,16 +1,4 @@
-function [outputArg1,outputArg2] = AppendixE(inputArg1,inputArg2)
-%APPENDIXE Summary of this function goes here
-%   Detailed explanation goes here
-arguments (Input)
-    inputArg1
-    inputArg2
-end
-
-arguments (Output)
-    outputArg1
-    outputArg2
-end
-
-outputArg1 = inputArg1;
-outputArg2 = inputArg2;
+function AppE = AppendixE(S_v, S, z, d, AR, sweep, lambda)
+    q = atan(tan(sweep)-(4*0.25*(1-lambda))/(AR*(1+lambda)));
+    AppE = 0.724 + 3.06*(S_v/S)/(1+cos(q))+0.4*z/d + 0.009*AR;
 end
