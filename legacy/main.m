@@ -10,7 +10,7 @@
 clear, clc
 
 %% ENVIRONMENTAL CONSTANTS
-v = 456; % ft/sec
+v = 88; % ft/sec
 h = 30000; % ft
 g = 32.2;
 b = 33.8;

@@ -1,0 +1,106 @@
+clear, clc % 
+
+x_bar_cg = 0.3; %
+M = 484/968; % Mach
+AoA_0L = -3 * (pi/180); % Radians
+CMac = -0.01; %
+eta_h = 0.95;
+eta_v = 0.95; % assumed - if not given just keep it as this
+
+a_inner = 0.55;
+a_outer = 0.95;
+
+% WING %
+
+b_w = 7; % Wingspan
+cr_w = 1.61720; % Wing Root Chord
+ct_w = 1.37255; % Wing Tip Chord
+LE_sweep_w = 0; % Sweep Angle Wing in Rad
+    [lambda_w, S_w, AR_w, c_bar_w, x_mgc_w, y_mgc_w] = geoParameter(b_w,cr_w,ct_w,LE_sweep_w)
+    x_ac_w = c_bar_w/4;
+aileronRatio = 0.25; % (cf/c)
+    tau_a = AppendixD(aileronRatio);
+y1 = a_inner * b_w/2; % inner point of aileron
+y2 = a_outer * b_2/2; % outer point of aileron
+dihedralAngle = atan(0/50); % divergence - (rad)
+
+% HORIZONTAL TAIL % 
+
+b_h = 2.25167; % HorTailspan
+cr_h = 0.84500; % HorTail Root Chord
+ct_h = 0.50000; % HorTail Tip Chord
+LE_sweep_h = deg2rad(20); % Sweep Angle HorTail in Rad
+    [lambda_h, S_h, AR_h, c_bar_h, x_mgc_h, y_mgc_h] = geoParameter(b_h,cr_h,ct_h,LE_sweep_h)
+elevatorRatio = 0.3;
+    tau_e = AppendixD(elevatorRatio)
+
+x_whr = 2.705; % dist from LE of wing root to LE of horTail chord
+    x_wh = x_whr - cr_w/4 + cr_h/4;
+z_wh = .41; % vert distance from wing to tail, positive if tail above
+    r = x_wh/(b_w/2);
+    m = z_wh/(b_w/2);
+    x_ac_h = x_whr + x_mgc_h + c_bar_h/4 - x_mgc_w;
+    x_cg = x_bar_cg*c_bar_w;
+
+% VERTICAL TAIL %
+
+b_v = 31; % dist from A/C centerline to tail tip
+cr_v = 1.338; % root chord vertical tail
+ct_v = .669; % tip chord vertical tail
+LE_sweep_v = atan(27/31); % rad
+    [lambda_v, S_v, AR_v, c_bar_v, x_mgc_v, y_mgc_v] = geoParameter(b_v,cr_v,ct_v,LE_sweep_v)
+    x_mgc_v=x_mgc_v*2; y_mgc_v=y_mgc_v*2;
+    AR_eff = 2*AR_v;
+x_wvr = 2.705; % distance from wing leading edge to v leading edge
+    x_ac_v = x_wvr + x_mgc_v + (c_bar_v/4)-x_mgc_w;
+z_w = 0; % Distance from centerline to wing % FROM THE HANDOUT LETS GO
+d_max = 0.9; % Max diameter
+rudderRatio = 0.3; 
+    tau_r = AppendixD(rudderRatio)
+
+% PARAMETER TIME :)
+CL_a_w = polhamus(AR_w,lambda_w,LE_sweep_w,M);
+CL_a_h = polhamus(AR_h,lambda_h,LE_sweep_h,M);
+de_dalpha = downwash(AR_w, lambda_w, LE_sweep_w, M, r, m);
+
+CL_0 = CL_a_w * abs(AoA_0L)
+CL_a = CL_a_w + eta_h*(S_h)/(S_w)*(1-de_dalpha)*CL_a_h
+CL_i_h = eta_h*(S_h)/(S_w)*CL_a_h
+CL_d_e = CL_i_h*tau_e
+
+Cm_0 = CMac + CL_0*(x_cg-x_ac_w)/c_bar_w
+Cm_a = CL_a_w*(x_cg-x_ac_w)/c_bar_w - eta_h*(S_h/S_w)*(1-de_dalpha)*CL_a_h*(x_ac_h-x_cg)/c_bar_w
+Cm_i_h = -eta_h*CL_a_h*(S_h/S_w)*(x_ac_h-x_cg)/c_bar_w
+Cm_d_e = Cm_i_h*tau_e
+
+x_bar_NP = (CL_a_w*x_ac_w + eta_h*(S_h/S_w)*(1-de_dalpha)*CL_a_h*x_ac_h)/(c_bar_w*(CL_a_w + eta_h*(S_h/S_w)*(1-de_dalpha)*CL_a_h)) 
+x_NP = x_bar_NP*c_bar_w;
+SM = (x_bar_NP - x_bar_cg)*100 % PERCENT
+
+CL_a_v = polhamus(AR_eff, lambda_v, LE_sweep_v, M)
+AppE = AppendixE(S_v, S_w, z_w, d_max, AR_w, LE_sweep_w, lambda_w)
+Cy_0 = 0;
+Cy_B_v = -S_v/S_w*CL_a_v*AppE;
+Cy_B_w = -0.0001*abs(dihedralAngle)*180/pi;
+Cy_B_wv = Cy_B_w+Cy_B_v;
+Cy_B_f = 0.3*Cy_B_wv;
+Cy_B = Cy_B_f+Cy_B_wv
+Cy_d_a = 0
+Cy_d_r = eta_v*S_v/S_w*CL_a_v*tau_r
+
+Cl_0 = 0;
+Cl_B_w = -2*CL_a_w*dihedralAngle*y_mgc_w/b_w;
+Cl_B_v = Cy_B_v* y_mgc_v/b_w;
+Cl_B = Cl_B_v + Cl_B_w
+Cl_d_a = AppendixG(CL_a_w,tau_a,cr_w,S_w,b_w,lambda_w,y1,y2)
+Cl_d_r = Cy_d_r*y_mgc_v/b_w
+
+Cn_0 = 0;
+Cn_B = -Cy_B_v*(x_ac_v-x_cg)/b_w % equal to Cn_B_v
+Cn_d_a = 0
+Cn_d_r = -Cy_d_r*(x_ac_v-x_cg)/b_w
+
+
+
+
+
